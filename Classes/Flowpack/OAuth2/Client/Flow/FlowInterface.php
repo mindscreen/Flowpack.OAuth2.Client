@@ -15,6 +15,7 @@ use Flowpack\OAuth2\Client\Token\AbstractClientToken;
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Security\Account;
 use TYPO3\Flow\Security\Authentication\TokenInterface;
+use TYPO3\Party\Domain\Model\Person;
 
 /**
  */
@@ -55,4 +56,12 @@ interface FlowInterface
      * @return string
      */
     public function getTokenClassName();
+
+    /**
+     * Returns the person representing the user
+     *
+     * @param AbstractClientToken $token
+     * @return Person
+     */
+    public function getPerson(AbstractClientToken $token);
 }

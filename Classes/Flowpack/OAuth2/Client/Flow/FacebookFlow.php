@@ -44,20 +44,8 @@ class FacebookFlow extends AbstractFlow implements FlowInterface
      */
     public function createPartyAndAttachToAccountFor(AbstractClientToken $token)
     {
-        $this->initializeUserData($token);
-        $userData = $this->authenticationServicesUserData[(string)$token];
 
-        $party = new Person();
-        $party->setName(new PersonName('', $userData['first_name'], '', $userData['last_name']));
-        // Todo: this is not covered by the Person implementation, we should have a solution for that
-        #$party->setBirthDate(\DateTime::createFromFormat('!m/d/Y', $userData['birthday'], new \DateTimeZone('UTC')));
-        #$party->setGender(substr($userData['gender'], 0, 1));
-        $electronicAddress = new ElectronicAddress();
-        $electronicAddress->setType(ElectronicAddress::TYPE_EMAIL);
-        $electronicAddress->setIdentifier($userData['email']);
-        $electronicAddress->isApproved(true);
-        $party->addElectronicAddress($electronicAddress);
-        $party->setPrimaryElectronicAddress($electronicAddress);
+        $party = $this->getPerson($token);
 
         $partyValidator = $this->validatorResolver->getBaseValidatorConjunction('TYPO3\Party\Domain\Model\Person');
         $validationResult = $partyValidator->validate($party);
@@ -111,5 +99,30 @@ class FacebookFlow extends AbstractFlow implements FlowInterface
 
         $query = $query . '?fields=' . $fields;
         return $query;
+    }
+
+    /**
+     * Returns the person representing the user
+     *
+     * @param AbstractClientToken $token
+     * @return Person
+     */
+    public function getPerson(AbstractClientToken $token)
+    {
+        $this->initializeUserData($token);
+        $userData = $this->authenticationServicesUserData[(string)$token];
+
+        $person = new Person();
+        $person->setName(new PersonName('', $userData['first_name'], '', $userData['last_name']));
+        // Todo: this is not covered by the Person implementation, we should have a solution for that
+        #$party->setBirthDate(\DateTime::createFromFormat('!m/d/Y', $userData['birthday'], new \DateTimeZone('UTC')));
+        #$party->setGender(substr($userData['gender'], 0, 1));
+        $electronicAddress = new ElectronicAddress();
+        $electronicAddress->setType(ElectronicAddress::TYPE_EMAIL);
+        $electronicAddress->setIdentifier($userData['email']);
+        $electronicAddress->isApproved(true);
+        $person->addElectronicAddress($electronicAddress);
+        $person->setPrimaryElectronicAddress($electronicAddress);
+        return $person;
     }
 }

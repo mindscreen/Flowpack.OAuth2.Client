@@ -125,6 +125,7 @@ class FacebookProvider extends AbstractClientProvider
             }
             $account->setRoles($roles);
             $this->accountRepository->add($account);
+            $this->emitAccountCreated($account, $this->facebookFlow->getPerson($authenticationToken));
         }
         $authenticationToken->setAccount($account);
 
