@@ -34,10 +34,10 @@ class UriBuilder
 
     /**
      * @param string $providerName The name of the authentication provider as used in the Settings
-     * @throws \InvalidArgumentException
+     * @param string $redirectUri
      * @return Uri
      */
-    public function getAuthorizationUri($providerName)
+    public function getAuthorizationUri($providerName, $redirectUri = '')
     {
         $providersOptions = $this->getConfiguredOptionsByProviderName($providerName);
         $uri = new Uri($providersOptions['authorizationEndpointUri']);
@@ -47,7 +47,9 @@ class UriBuilder
             'response_type' => $providersOptions['responseType'],
             'scope' => implode(' ', $providersOptions['scopes']),
             'display' => $providersOptions['display'],
-            'redirect_uri' => $this->getRedirectionEndpointUri($providerName)
+            'redirect_uri' => !empty($redirectUri) ?
+                $redirectUri . '?__oauth2Provider=' . $providerName :
+                $this->getRedirectionEndpointUri($providerName)
         ));
         $uri->setQuery($presentQuery);
 

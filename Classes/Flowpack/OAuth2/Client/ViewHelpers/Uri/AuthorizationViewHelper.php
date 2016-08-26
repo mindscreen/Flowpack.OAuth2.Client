@@ -28,10 +28,11 @@ class AuthorizationViewHelper extends AbstractViewHelper
 
     /**
      * @param string $providerName The name of the authentication provider as defined in the Settings
+     * @param string $redirectUri
      * @return string
      */
-    public function render($providerName)
+    public function render($providerName, $redirectUri = '')
     {
-        return $this->oauthUriBuilder->getAuthorizationUri($providerName);
+        return $this->oauthUriBuilder->getAuthorizationUri($providerName, $redirectUri);
     }
 }
