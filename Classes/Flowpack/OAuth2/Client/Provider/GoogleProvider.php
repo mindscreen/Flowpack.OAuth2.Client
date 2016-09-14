@@ -130,6 +130,7 @@ class GoogleProvider extends AbstractClientProvider
             }
             $account->setRoles($roles);
             $this->accountRepository->add($account);
+            $this->emitAccountCreated($account, $this->googleFlow->getPerson($authenticationToken));
         }
 
         $authenticationToken->setAccount($account);

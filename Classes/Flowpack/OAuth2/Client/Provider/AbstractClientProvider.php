@@ -12,10 +12,18 @@ namespace Flowpack\OAuth2\Client\Provider;
  *                                                                        */
 
 use TYPO3\Flow\Annotations as Flow;
+use TYPO3\Flow\Security\Account;
 use TYPO3\Flow\Security\Authentication\Provider\AbstractProvider;
+use TYPO3\Party\Domain\Model\Person;
 
 /**
  */
 abstract class AbstractClientProvider extends AbstractProvider
 {
+    /**
+     * @param Account $account
+     * @param Person $userData
+     * @Flow\Signal
+     */
+    protected function emitAccountCreated(Account $account, Person $userData) {}
 }
