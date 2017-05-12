@@ -12,10 +12,10 @@ namespace Flowpack\OAuth2\Client\Flow;
  *                                                                        */
 
 use Flowpack\OAuth2\Client\Token\AbstractClientToken;
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Security\Account;
-use TYPO3\Flow\Security\Authentication\TokenInterface;
-use TYPO3\Party\Domain\Model\Person;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Security\Account;
+use Neos\Flow\Security\Authentication\TokenInterface;
+use Neos\Party\Domain\Model\Person;
 
 /**
  */
@@ -28,7 +28,7 @@ interface FlowInterface
     public function getChargedAuthenticatedTokenHavingNoPartyAttached();
 
     /**
-     * @param \TYPO3\Flow\Security\Authentication\TokenInterface|\Flowpack\OAuth2\Client\Token\AbstractClientToken $token
+     * @param \Neos\Flow\Security\Authentication\TokenInterface|\Flowpack\OAuth2\Client\Token\AbstractClientToken $token
      * @return TokenInterface
      */
     public function getTokenOfForeignAccountOf(AbstractClientToken $token);
