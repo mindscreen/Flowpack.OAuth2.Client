@@ -28,7 +28,14 @@ class GoogleFlow extends AbstractFlow implements FlowInterface
      */
     protected $googleApiClient;
 
-    /**
+
+	/**
+	 * @Flow\Inject
+	 * @var \Neos\Party\Domain\Service\PartyService
+	 */
+	protected $partyService;
+
+	/**
      * Creates a party for the given account
      *
      * @param AbstractClientToken $token
@@ -44,8 +51,8 @@ class GoogleFlow extends AbstractFlow implements FlowInterface
             throw new InvalidPartyDataException('The created party does not satisfy the requirements', 1384266207);
         }
 
-        $account = $token->getAccount();
-        $account->setParty($party);
+		$account = $token->getAccount();
+        $this->partyService->assignAccountToParty($account, $party);
         $this->accountRepository->update($account);
         $this->partyRepository->add($party);
 
@@ -97,6 +104,7 @@ class GoogleFlow extends AbstractFlow implements FlowInterface
         $electronicAddress->isApproved(true);
         $person->addElectronicAddress($electronicAddress);
         $person->setPrimaryElectronicAddress($electronicAddress);
+
         return $person;
     }
 }

@@ -36,6 +36,12 @@ class FacebookFlow extends AbstractFlow implements FlowInterface
      */
     protected $facebookApiClient;
 
+	/**
+	 * @Flow\Inject
+	 * @var \Neos\Party\Domain\Service\PartyService
+	 */
+	protected $partyService;
+
     /**
      * Creates a party for the given account
      *
@@ -53,12 +59,14 @@ class FacebookFlow extends AbstractFlow implements FlowInterface
             throw new InvalidPartyDataException('The created party does not satisfy the requirements', 1384266207);
         }
 
-        $account = $token->getAccount();
-        $account->setParty($party);
+        echo $party->getPrimaryElectronicAddress();
+
+		$account = $token->getAccount();
+		$this->partyService->assignAccountToParty($account, $party);
         $this->accountRepository->update($account);
         $this->partyRepository->add($party);
 
-        $this->persistenceManager->persistAll();
+		$this->persistenceManager->persistAll();
     }
 
     /**
